@@ -24,7 +24,7 @@ const TAB_DATA = [
     content: (
       <ul className="list-disc pl-2">
         <li>EM. Padre Valente Simioni (2012/2020)</li>
-        <li>Ensino Médio em Senac Joinville (2021/2023)</li>
+        <li>Ensino Médio em Faculdade Senac Joinville (2021/2023)</li>
         <li>Faculdade Senac Joinville (2024/2026)</li>
       </ul>
     ),

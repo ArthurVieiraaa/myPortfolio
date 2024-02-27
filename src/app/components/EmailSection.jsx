@@ -4,40 +4,44 @@ import GithubIcon from "../../../public/github-icon.svg";
 import LinkedinIcon from "../../../public/linkedin-icon.svg";
 import Link from "next/link";
 import Image from "next/image";
+import emailjs from "@emailjs/browser";
 
 const EmailSection = () => {
-  const [emailSubmitted, setEmailSubmitted] = useState(false);
+  
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = {
-      email: e.target.email.value,
-      subject: e.target.subject.value,
-      message: e.target.message.value,
-    };
-    const JSONdata = JSON.stringify(data);
-    const endpoint = "/api/send";
+function App() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
+};
 
-    // Form the request for sending data to the server.
-    const options = {
-      // The method is POST because we are sending data.
-      method: "POST",
-      // Tell the server we're sending JSON.
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // Body of the request is the JSON data we created above.
-      body: JSONdata,
-    };
+function sendEmail(e) {
+  e.preventDefault();
+  
+  if (!name || !email || !message) {
+    alert('Preencha todos os campos!');
+    return;
+  }
 
-    const response = await fetch(endpoint, options);
-    const resData = await response.json();
+  const templateParams = {
+    from_name: name,
+    message: message,
+    email: email
+  }
+  
+  emailjs.send("service_n0bcnct", "template_9u2uzik", templateParams, "sDEsSFoBHnugReiwP")
+  .then((response) => {
+    console.log('Email Enviado!', response.status, response.text);
+    alert('E-mail enviado com sucesso!');
+    setName('');
+    setEmail('');
+    setMessage('')
+  }, (error) => {
+    console.log('Erro ao enviar e-mail', error);
+    alert('Erro ao enviar e-mail');
+  })
 
-    if (response.status === 200) {
-      console.log("Message sent.");
-      setEmailSubmitted(true);
-    }
-  };
+}
 
   return (
     <section
@@ -63,42 +67,37 @@ const EmailSection = () => {
         </div>
       </div>
       <div>
-        {emailSubmitted ? (
-          <p className="text-green-500 text-sm mt-2">
-            E-mail enviado com sucesso!
-          </p>
-        ) : (
-          <form className="flex flex-col" onSubmit={handleSubmit}>
+        
+          <form className="flex flex-col" onSubmit={sendEmail}>
+            <div className="mb-6">
+              <label
+                htmlFor="name"
+                className="text-white block mb-2 text-sm font-medium"
+              >
+                Seu Nome:
+              </label>
+              <input
+                type="text"
+                placeholder="Digite seu nome"
+                onChange={(e) => setName(e.target.value)}
+                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
+              />
+            </div>
             <div className="mb-6">
               <label
                 htmlFor="email"
-                className="text-white block mb-2 text-sm font-medium"
+                className="text-white block text-sm mb-2 font-medium"
               >
-                Seu Email:
+                Email:
               </label>
               <input
                 name="email"
                 type="email"
                 id="email"
-                required
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
                 className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
                 placeholder="seu@email.com"
-              />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="subject"
-                className="text-white block text-sm mb-2 font-medium"
-              >
-                Assunto:
-              </label>
-              <input
-                name="subject"
-                type="text"
-                id="subject"
-                required
-                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-                placeholder="Vamos falar sobre..."
               />
             </div>
             <div className="mb-6">
@@ -111,6 +110,8 @@ const EmailSection = () => {
               <textarea
                 name="message"
                 id="message"
+                onChange={(e) => setMessage(e.target.value)}
+                value={message}
                 className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
                 placeholder="Escreva sua mensagem aqui..."
               />
@@ -122,7 +123,6 @@ const EmailSection = () => {
               Enviar 
             </button>
           </form>
-        )}
       </div>
     </section>
   );
