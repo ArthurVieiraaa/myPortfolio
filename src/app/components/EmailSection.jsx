@@ -5,49 +5,48 @@ import LinkedinIcon from "../../../public/linkedin-icon.svg";
 import Link from "next/link";
 import Image from "next/image";
 import emailjs from "@emailjs/browser";
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 const EmailSection = () => {
-  
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-function App() {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [message, setMessage] = useState('')
-};
+  function sendEmail(e) {
+    e.preventDefault();
+    setError(null);
 
-function sendEmail(e) {
-  e.preventDefault();
-  
-  if (!name || !email || !message) {
-    alert('Preencha todos os campos!');
-    return;
+    if (!name || !email || !message) {
+      console.log('Preencha todos os campos!');
+      return;
+    }
+
+    setLoading(true);
+
+    const templateParams = {
+      from_name: name,
+      message: message,
+      email: email
+    };
+
+    emailjs.send("service_n0bcnct", "template_9u2uzik", templateParams, "sDEsSFoBHnugReiwP")
+      .then(() => {
+        NotificationManager.success('Enviado com sucesso', 'Sucesso');
+        setName('');
+        setEmail('');
+        setMessage('');
+      })
+      .catch(error => {
+       NotificationManager.error('Não enviado', 'Erro', error);
+        setError('Erro ao enviar e-mail. Por favor, tente novamente mais tarde.');
+      })
+      .finally(() => setLoading(false));
   }
-
-  const templateParams = {
-    from_name: name,
-    message: message,
-    email: email
-  }
-  
-  emailjs.send("service_n0bcnct", "template_9u2uzik", templateParams, "sDEsSFoBHnugReiwP")
-  .then((response) => {
-    console.log('Email Enviado!', response.status, response.text);
-    alert('E-mail enviado com sucesso!');
-    setName('');
-    setEmail('');
-    setMessage('')
-  }, (error) => {
-    console.log('Erro ao enviar e-mail', error);
-    alert('Erro ao enviar e-mail');
-  })
-
-}
 
   return (
-    <section
-      id="contact"
-      className="grid md:grid-cols-2 my-12 md:my-12 py-24 gap-4 relative"
-    >
+    <section id="contact" className="grid md:grid-cols-2 my-12 md:my-12 py-24 gap-4 relative">
       <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary-900 to-transparent rounded-full h-80 w-80 z-0 blur-lg absolute top-3/4 -left-4 transform -translate-x-1/2 -translate-1/2"></div>
       <div className="z-10">
         <h5 className="text-xl font-bold text-white my-2">
@@ -59,70 +58,59 @@ function sendEmail(e) {
         </p>
         <div className="socials flex flex-row gap-2">
           <Link href="https://github.com/ArthurVieiraaa">
-            <Image src={GithubIcon} alt="Github Icon" />
+              <Image src={GithubIcon} alt="Github Icon" />
           </Link>
           <Link href="https://www.linkedin.com/in/arthur-vieira-bruske-3981b1243/">
-            <Image src={LinkedinIcon} alt="Linkedin Icon" />
+              <Image src={LinkedinIcon} alt="Linkedin Icon" />
           </Link>
         </div>
       </div>
       <div>
-        
-          <form className="flex flex-col" onSubmit={sendEmail}>
-            <div className="mb-6">
-              <label
-                htmlFor="name"
-                className="text-white block mb-2 text-sm font-medium"
-              >
-                Seu Nome:
-              </label>
-              <input
-                type="text"
-                placeholder="Digite seu nome"
-                onChange={(e) => setName(e.target.value)}
-                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-              />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="email"
-                className="text-white block text-sm mb-2 font-medium"
-              >
-                Email:
-              </label>
-              <input
-                name="email"
-                type="email"
-                id="email"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-                placeholder="seu@email.com"
-              />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="message"
-                className="text-white block text-sm mb-2 font-medium"
-              >
-                Mensagem:
-              </label>
-              <textarea
-                name="message"
-                id="message"
-                onChange={(e) => setMessage(e.target.value)}
-                value={message}
-                className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
-                placeholder="Escreva sua mensagem aqui..."
-              />
-            </div>
-            <button
-              type="submit"
-              className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-lg w-full"
-            >
-              Enviar 
-            </button>
-          </form>
+        <form className="flex flex-col" onSubmit={sendEmail}>
+          <div className="mb-6">
+            <label htmlFor="name" className="text-white block mb-2 text-sm font-medium">
+              Seu Nome:
+            </label>
+            <input
+              type="text"
+              placeholder="Digite seu nome"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
+            />
+          </div>
+          <div className="mb-6">
+            <label htmlFor="email" className="text-white block text-sm mb-2 font-medium">
+              Email:
+            </label>
+            <input
+              type="email"
+              placeholder="seu@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
+            />
+          </div>
+          <div className="mb-6">
+            <label htmlFor="message" className="text-white block text-sm mb-2 font-medium">
+              Mensagem:
+            </label>
+            <textarea
+              placeholder="Escreva sua mensagem aqui..."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
+            />
+          </div>
+          {error && <p className="text-red-500 mb-4">{error}</p>}
+          <button
+            type="submit"
+            className="bg-primary-500 hover:bg-primary-600 text-white font-medium py-2.5 px-5 rounded-lg w-full"
+            disabled={loading}
+          >
+            {loading ? 'Enviando...' : 'Enviar'}
+          </button>
+        </form>
       </div>
     </section>
   );
