@@ -34,8 +34,11 @@ const HeroSection = () => {
               repeat={Infinity}
             />
           </h1>
-          <p className="text-[#ADB7BE] text-base sm:text-lg mb-8 lg:text-xl">
+          <p className="text-[#ADB7BE] text-base sm:text-lg mb-1 lg:text-xl">
             "Não é a linguagem de programação que define o programador, mas sim sua lógica."
+          </p>
+          <p className="text-[#ADB7BE] text-base mb-8">
+           -David Ribeiro Guilherme
           </p>
           <div>
             <Link
