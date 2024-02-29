@@ -7,12 +7,12 @@ import { motion, useInView } from "framer-motion";
 const projectsData = [
   {
     id: 1,
-    title: "React Portfolio Website",
-    description: "Project 1 description",
+    title: "Marine Lifestyle (Projeto de curso)",
+    description: "<HTML & CSS>",
     image: "/images/projects/1.png",
     tag: ["All", "Web"],
-    gitUrl: "/",
-    previewUrl: "/",
+    gitUrl: "https://github.com/ArthurVieiraaa/marinelifestyle",
+    previewUrl: "https://marinelifestyle.netlify.app/",
   },
   {
     id: 2,
