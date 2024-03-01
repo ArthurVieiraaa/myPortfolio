@@ -5,7 +5,8 @@ import LinkedinIcon from "../../../public/linkedin-icon.svg";
 import Link from "next/link";
 import Image from "next/image";
 import emailjs from "@emailjs/browser";
-import {NotificationContainer, NotificationManager} from 'react-notifications';
+
+import { Notify } from "notiflix/build/notiflix-notify-aio";
 
 const EmailSection = () => {
   const [name, setName] = useState('');
@@ -19,7 +20,7 @@ const EmailSection = () => {
     setError(null);
 
     if (!name || !email || !message) {
-      console.log('Preencha todos os campos!');
+      Notify.failure("Preencha todos os campos!")
       return;
     }
 
@@ -33,13 +34,14 @@ const EmailSection = () => {
 
     emailjs.send("service_n0bcnct", "template_9u2uzik", templateParams, "sDEsSFoBHnugReiwP")
       .then(() => {
-        NotificationManager.success('Enviado com sucesso', 'Sucesso');
+        Notify.success("Email enviado com sucesso!")
         setName('');
         setEmail('');
         setMessage('');
       })
       .catch(error => {
-       NotificationManager.error('Não enviado', 'Erro', error);
+        Notify.failure("Não enviado");
+        console.log(error)
         setError('Erro ao enviar e-mail. Por favor, tente novamente mais tarde.');
       })
       .finally(() => setLoading(false));
@@ -76,6 +78,7 @@ const EmailSection = () => {
               placeholder="Digite seu nome"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              name={"name"}
               className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
             />
           </div>
@@ -88,6 +91,7 @@ const EmailSection = () => {
               placeholder="seu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              name={"email"}
               className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
             />
           </div>
@@ -99,6 +103,7 @@ const EmailSection = () => {
               placeholder="Escreva sua mensagem aqui..."
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              name={"message"}
               className="bg-[#18191E] border border-[#33353F] placeholder-[#9CA2A9] text-gray-100 text-sm rounded-lg block w-full p-2.5"
             />
           </div>
