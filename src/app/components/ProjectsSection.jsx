@@ -21,7 +21,7 @@ const projectsData = [
     image: "/images/projects/2.png",
     tag: ["Todos", "Web"],
     gitUrl: "https://github.com/ArthurVieiraaa/myPortfolio",
-    previewUrl: "/",
+    previewUrl: "https://arthurvieirabruske.netlify.app/",
   },
   // {
   //   id: 3,
