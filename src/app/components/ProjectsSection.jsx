@@ -12,7 +12,7 @@ const projectsData = [
     image: "/images/projects/1.png",
     tag: ["Todos", "Web"],
     gitUrl: "https://github.com/ArthurVieiraaa/marinelifestyle",
-    previewUrl: "https://marinelifestyle.netlify.app",
+    previewUrl: "https://marinelifestyle.netlify.app/",
   },
   {
     id: 2,

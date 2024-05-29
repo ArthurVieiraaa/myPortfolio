@@ -48,7 +48,7 @@ const HeroSection = () => {
               Contrate-me
             </Link>
             <Link
-              href="/images/Arthur_Curriculo.pdf"
+              href="/images/Curriculo_Arthur.pdf"
               alt="Curriculo Arthur Vieira Bruske"
               target="_blank"
               rel="noopener noreferrer"
